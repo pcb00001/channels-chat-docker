@@ -1,0 +1,19 @@
+version: '3'
+services:
+  redis:
+    container_name: "pyip_redis"
+    image: "redis:alpine"
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+  web:
+    container_name: "pyip_web"
+    build: .
+    volumes:
+      - .:/projects
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
